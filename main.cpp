@@ -96,7 +96,7 @@ void LanguageDetector::setup(QDir lists)
     }
 
     fprintf(stderr,
-            "Languages loaded, total %d words, normalizing vocabularies...\n",
+            "Languages loaded, total %d words\n",
             words.size());
 }
 
@@ -215,7 +215,13 @@ int main()
 {
     LanguageDetector detector("wordlists");
 
-    detector.detectLanguage("this is a test");
+    QTextStream in(stdin, QIODevice::ReadOnly);
+    QString line = in.readLine();
+    while(line.size() > 0)
+    {
+        detector.detectLanguage(line);
+        line = in.readLine();
+    }
 
     return 0;
 }
