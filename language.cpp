@@ -1,23 +1,24 @@
 #include "language.h"
 
+#include <QDebug>
 #include <QFile>
 #include <QTextStream>
 
 Language::Language(WordHolder *detector, const QString &name, QDir path)
   : m_Name(name)
 {
-    fprintf(stderr, "  Loading language %s...\n", name.toLocal8Bit().data());
+    qDebug() << "  Loading language " << name << "...";
     path.setFilter(QDir::Files);
     QStringList dicts = path.entryList();
     QStringList::ConstIterator it = dicts.begin();
     for(; it != dicts.end(); ++it)
         readDict(detector, path.filePath(*it));
-    fprintf(stderr, "  Loaded %d words\n", words.size());
+    qDebug() << "  Loaded" << words.size() << "words";
 }
 
 void Language::readDict(WordHolder *detector, QString dict)
 {
-    fprintf(stderr, "    Reading %s...\n", dict.toLocal8Bit().data());
+    qDebug() << "    Reading" << dict << "...";
 
     QFile dictf(dict);
     if(!dictf.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -37,5 +38,5 @@ void Language::readDict(WordHolder *detector, QString dict)
         nb_words++;
     }
 
-    fprintf(stderr, "    Read %d words\n", nb_words);
+    qDebug() << "    Read" << nb_words << "words";
 }
